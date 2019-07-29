@@ -9,7 +9,7 @@ compute_node3_ip='192.168.11.142'
 controller_node1_ip='192.168.11.143'
 controller_node2_ip='192.168.11.144'
 controller_node3_ip='192.168.11.145'
-barbican_parameter='command' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+barbican_parameter='castellan.key_manager.barbican_key_manager.BarbicanKeyManager' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #verify glance is configured to use barbican
 glance_parameter='True'
 
