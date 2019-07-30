@@ -2,13 +2,13 @@
 
 ################## ------- Varibales ----------###################
 ###-- 3 compute nodes ---##
-compute_node1_ip='192.168.11.140'
-compute_node2_ip='192.168.11.141'
-compute_node3_ip='192.168.11.142'
+compute_node1_ip='192.168.12.140'
+compute_node2_ip='192.168.12.141'
+compute_node3_ip='192.168.12.142'
 ###-- 3 controller nodes ---##
-controller_node1_ip='192.168.11.143'
-controller_node2_ip='192.168.11.144'
-controller_node3_ip='192.168.11.145'
+controller_node1_ip='192.168.12.143'
+controller_node2_ip='192.168.12.144'
+controller_node3_ip='192.168.12.145'
 barbican_parameter='castellan.key_manager.barbican_key_manager.BarbicanKeyManager' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #verify glance is configured to use barbican
 glance_parameter='True'
