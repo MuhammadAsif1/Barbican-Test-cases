@@ -9,7 +9,7 @@ compute_node3_ip='192.168.120.22'
 controller_node1_ip='192.168.120.28'
 controller_node2_ip='192.168.120.26'
 controller_node3_ip='192.168.120.35'
-barbican_parameter='castellan.key_manager.barbican_key_manager.BarbicanKeyManager' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+barbican_parameter='backend=castellan.key_manager.barbican_key_manager.BarbicanKeyManager' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #verify glance is configured to use barbican
 glance_parameter='True'
 
@@ -52,22 +52,22 @@ mkdir /home/osp_admin/barbican_keys
 
 verify_glance_with_barbican()
 {
-  output1=$(ssh heat-admin@$compute_node1_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+  output1=$(ssh heat-admin@$compute_node1_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
   echo "$output1" > $logs_directory/verify_glance_with_barbican.log /// only first will over write 
   echo "$output1"
-  output2=$(ssh heat-admin@$compute_node2_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output2=$(ssh heat-admin@$compute_node2_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output2" >> $logs_directory/verify_glance_with_barbican.log
   echo "$output2"
-  output3=$(ssh heat-admin@$compute_node3_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output3=$(ssh heat-admin@$compute_node3_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output3" >> $logs_directory/verify_glance_with_barbican.log
   echo "$output3"
-  output4=$(ssh heat-admin@$compute_node1_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
+  output4=$(ssh heat-admin@$compute_node1_ip 'sudo crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf glance verify_glance_signatures')
   echo "$output4" >> $logs_directory/verify_glance_with_barbican.log
   echo "$output4"
-  output5=$(ssh heat-admin@$compute_node2_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
+  output5=$(ssh heat-admin@$compute_node2_ip 'sudo crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf glance verify_glance_signatures')
   echo "$output5" >> $logs_directory/verify_glance_with_barbican.log
   echo "$output5"
-  output6=$(ssh heat-admin@$compute_node3_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
+  output6=$(ssh heat-admin@$compute_node3_ip 'sudo crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf glance verify_glance_signatures')
   echo "$output6" >> $logs_directory/verify_glance_with_barbican.log
   echo "$output6"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ] && [ $glance_parameter = $output4 ] && [ $glance_parameter = $output5 ] && [ $glance_parameter = $output6 ]
@@ -86,13 +86,13 @@ verify_glance_with_barbican()
 #########################################################################
 verify_cinder_uses_barbican()
 {
-  output1=$(ssh heat-admin@$controller_node1_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+  output1=$(ssh heat-admin@$controller_node1_ip 'sudo cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
   echo "$output1" > $logs_directory/verify_cinder_uses_barbican.log /// only first will over write
   echo "$output1"
-  output2=$(ssh heat-admin@$controller_node2_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output2=$(ssh heat-admin@$controller_node2_ip 'sudo cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output2" >> $logs_directory/verify_cinder_uses_barbican.log
   echo "$output2"
-  output3=$(ssh heat-admin@$controller_node1_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output3=$(ssh heat-admin@$controller_node1_ip 'sudo cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output3" >> $logs_directory/verify_cinder_uses_barbican.log
   echo "$output3"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ]
@@ -111,26 +111,26 @@ verify_cinder_uses_barbican()
 ###########################################################################
 verify_nova_uses_barbican()
 {
-  output1=$(ssh heat-admin@$compute_node1_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> ' cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+  output1=$(ssh heat-admin@$compute_node1_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> ' cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
   echo "$output1" > $logs_directory/verify_nova_uses_barbican.log /// only first will over write
   echo "$output1"
-  output2=$(ssh heat-admin@$compute_node2_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output2=$(ssh heat-admin@$compute_node2_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output2" >> $logs_directory/verify_nova_uses_barbican.log
   echo "$output2"
-  output3=$(ssh heat-admin@$compute_node3_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+  output3=$(ssh heat-admin@$compute_node3_ip 'sudo cat /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
   echo "$output3" >> $logs_directory/verify_nova_uses_barbican.log
   echo "$output3"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ]
   then
     echo '========================================================================================='
-    echo '========== Test Case executed Successfully, Cinder is enabled to use Barbican ==========='
+    echo '========== Test Case executed Successfully, Nova is enabled to use Barbican ==========='
     echo '========================================================================================='
-    echo '========== Test Case executed Successfully, Cinder is enabled to use Barbican ===========' >> $logs_directory/verify_nova_uses_barbican.log
+    echo '========== Test Case executed Successfully, Nova is enabled to use Barbican ===========' >> $logs_directory/verify_nova_uses_barbican.log
   else
     echo '========================================================================================='
-    echo '=============== Test Case Failed, Cinder is not enabled to use Barbican ================='
+    echo '=============== Test Case Failed, Nova is not enabled to use Barbican ================='
     echo '========================================================================================='
-    echo '=============== Test Case Failed, Cinder is not enabled to use Barbican =================' >> $logs_directory/verify_nova_uses_barbican.log
+    echo '=============== Test Case Failed, Nova is not enabled to use Barbican =================' >> $logs_directory/verify_nova_uses_barbican.log
   fi   
 }
 ############################################################################
@@ -142,11 +142,10 @@ encrypted_volume_creation()
   echo "$output" > $logs_directory/encrypted_volume_creation.log
   
   output=$(openstack volume create --size 1 --type LuksEncryptor-Template-256 $encrypted_volume)
-  sleep 1m
   echo "$output"
   echo "$output" >> $logs_directory/encrypted_volume_creation.log
-
-  if [ $(openstack volume show testvolume | awk '/available/ {print $4}') = 'available']
+  sleep 2m
+  if [ $(openstack volume show $encrypted_volume | awk '/available/ {print $4}') = 'available' ]
   then
     echo '========================================================================================='
     echo '================= Test Case executed Successfully, Encrypted Volume is created =========='
@@ -189,7 +188,7 @@ verify_addition_of_key_to_barbican_secret_store()
   href_id=$(echo $href_value | awk -F '/' '{print $6}')
   echo "$href_id"
   echo "$href_id" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
-  if [ $(openstack secret show $href_value | grep $singned_cert_key) != ' ' ]
+  if [ $(openstack secret show $href_value | grep $singned_cert_key) = ' ' ]
   then
     echo "Barbican Secret Key added Successfully"
     echo "Barbican Secret Key added Successfully" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
@@ -221,7 +220,7 @@ creating_signed_image()
   echo "$output"
   echo "$output" >> $logs_directory/creating_signed_image.log
   
-  if [ $(openstack image show $image | awk '/status/ {print $4}') = 'active' ]
+  if [ $(openstack image show $image | awk '/status/ {print $4}') = 'ACTIVE' ]
   then
     echo "Image Created Successfully"
     echo "Image Created Successfully" >> $logs_directory/creating_signed_image.log
@@ -326,10 +325,10 @@ attach_encrypted_volume_to_existing_instance()
 }
 #############---------- Main ------------#############
 # uncomment functions according to the requirement
-verify_glance_with_barbican
-verify_cinder_uses_barbican
-verify_nova_uses_barbican
-#encrypted_volume_creation
+#verify_glance_with_barbican   #working
+#verify_cinder_uses_barbican   #working
+#verify_nova_uses_barbican     #working
+encrypted_volume_creation
 #verify_addition_of_key_to_barbican_secret_store ## this should be called in 'creating_signed_image', if needed 
 #creating_signed_image
 #creating_network_and_server
