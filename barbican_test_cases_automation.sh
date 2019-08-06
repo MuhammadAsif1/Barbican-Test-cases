@@ -53,23 +53,23 @@ mkdir /home/osp_admin/barbican_keys
 verify_glance_with_barbican()
 {
   output1=$(ssh heat-admin@$compute_node1_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-  echo $output1 > $logs_directory/verify_glance_with_barbican.log /// only first will over write 
-  
+  echo "$output1" > $logs_directory/verify_glance_with_barbican.log /// only first will over write 
+  echo "$output1"
   output2=$(ssh heat-admin@$compute_node2_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output2 >> $logs_directory/verify_glance_with_barbican.log
-  
+  echo "$output2" >> $logs_directory/verify_glance_with_barbican.log
+  echo "$output2"
   output3=$(ssh heat-admin@$compute_node3_ip 'cat /var/lib/config-data/puppet-generated/glance_api/etc/glance/glance-api.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output3 >> $logs_directory/verify_glance_with_barbican.log
-  
+  echo "$output3" >> $logs_directory/verify_glance_with_barbican.log
+  echo "$output3"
   output4=$(ssh heat-admin@$compute_node1_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
-  echo $output4 >> $logs_directory/verify_glance_with_barbican.log
-  
+  echo "$output4" >> $logs_directory/verify_glance_with_barbican.log
+  echo "$output4"
   output5=$(ssh heat-admin@$compute_node2_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
-  echo $output5 >> $logs_directory/verify_glance_with_barbican.log
-  
+  echo "$output5" >> $logs_directory/verify_glance_with_barbican.log
+  echo "$output5"
   output6=$(ssh heat-admin@$compute_node3_ip 'crudini --get /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf verify_glance_signatures')
-  echo $output6 >> $logs_directory/verify_glance_with_barbican.log
-  
+  echo "$output6" >> $logs_directory/verify_glance_with_barbican.log
+  echo "$output6"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ] && [ $glance_parameter = $output4 ] && [ $glance_parameter = $output5 ] && [ $glance_parameter = $output6 ]
   then
     echo '========================================================================================='
@@ -87,14 +87,14 @@ verify_glance_with_barbican()
 verify_cinder_uses_barbican()
 {
   output1=$(ssh heat-admin@$controller_node1_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-  echo $output1 > $logs_directory/verify_cinder_uses_barbican.log /// only first will over write
-  
+  echo "$output1" > $logs_directory/verify_cinder_uses_barbican.log /// only first will over write
+  echo "$output1"
   output2=$(ssh heat-admin@$controller_node2_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output2 >> $logs_directory/verify_cinder_uses_barbican.log
-  
+  echo "$output2" >> $logs_directory/verify_cinder_uses_barbican.log
+  echo "$output2"
   output3=$(ssh heat-admin@$controller_node1_ip 'cat /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output3 >> $logs_directory/verify_cinder_uses_barbican.log
-  
+  echo "$output3" >> $logs_directory/verify_cinder_uses_barbican.log
+  echo "$output3"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ]
   then
     echo '========================================================================================='
@@ -112,11 +112,14 @@ verify_cinder_uses_barbican()
 verify_nova_uses_barbican()
 {
   output1=$(ssh heat-admin@$compute_node1_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager') # this should be executed for that ----> ' cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-  echo $output1 > $logs_directory/verify_nova_uses_barbican.log /// only first will over write
+  echo "$output1" > $logs_directory/verify_nova_uses_barbican.log /// only first will over write
+  echo "$output1"
   output2=$(ssh heat-admin@$compute_node2_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output2 >> $logs_directory/verify_nova_uses_barbican.log
+  echo "$output2" >> $logs_directory/verify_nova_uses_barbican.log
+  echo "$output2"
   output3=$(ssh heat-admin@$compute_node3_ip 'cat /var/lib/config-data/nova-libvirt/etc/nova/nova.conf | grep castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
-  echo $output3 >> $logs_directory/verify_nova_uses_barbican.log
+  echo "$output3" >> $logs_directory/verify_nova_uses_barbican.log
+  echo "$output3"
   if [ $barbican_parameter = $output1 ] && [ $barbican_parameter = $output2 ] && [ $barbican_parameter = $output3 ]
   then
     echo '========================================================================================='
@@ -135,13 +138,13 @@ encrypted_volume_creation()
 {
   output=$(openstack volume type create --encryption-provider nova.volume.encryptors.luks.LuksEncryptor --encryption-cipher aes-xts-plain64 --encryption-key-size 256 --encryption-control-location front-end $volume_template)
   sleep 10
-  echo $output
-  echo $output > $logs_directory/encrypted_volume_creation.log
+  echo "$output"
+  echo "$output" > $logs_directory/encrypted_volume_creation.log
   
   output=$(openstack volume create --size 1 --type LuksEncryptor-Template-256 $encrypted_volume)
   sleep 1m
-  echo $output
-  echo $output >> $logs_directory/encrypted_volume_creation.log
+  echo "$output"
+  echo "$output" >> $logs_directory/encrypted_volume_creation.log
 
   if [ $(openstack volume show testvolume | awk '/available/ {print $4}') = 'available']
   then
@@ -163,29 +166,29 @@ verify_addition_of_key_to_barbican_secret_store()
   rm -rf /home/osp_admin/barbican_keys/*
   ##Generate a private key and convert it to the required format
   output=$(openssl genrsa -out /home/osp_admin/barbican_keys/$private_key 1024)
-  echo $output
-  echo $output > $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$output"
+  echo "$output" > $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   
   output=$(openssl rsa -pubout -in /home/osp_admin/barbican_keys/$private_key -out /home/osp_admin/barbican_keys/$public_key)
-  echo $output
-  echo $output >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$output"
+  echo "$output" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   
   output=$(openssl req -new -key /home/osp_admin/barbican_keys/$private_key -out /home/osp_admin/barbican_keys/$cert_request)
-  echo $output
-  echo $output >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$output"
+  echo "$output" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   
   output=$(openssl x509 -req -days 14 -in /home/osp_admin/barbican_keys/$cert_request -signkey /home/osp_admin/barbican_keys/$private_key -out /home/osp_admin/barbican_keys/$signed_cert)
-  echo $output
-  echo $output >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$output"
+  echo "$output" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   
   ##Add the key to the barbican secret store
   href_value=$(openstack secret store --name $singned_cert_key --algorithm RSA --secret-type certificate --payload-content-type "application/octet-stream" --payload-content-encoding base64  --payload "$(base64 /home/osp_admin/barbican_keys/$signed_cert)" -c 'Secret href' -f value)  ###some doubts in this command
-  echo $href_value
-  echo $href_value >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$href_value"
+  echo "$href_value" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   ###
   href_id=$(echo $href_value | awk -F '/' '{print $6}')
-  echo $href_id
-  echo $href_id >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
+  echo "$href_id"
+  echo "$href_id" >> $logs_directory/verify_addition_of_key_to_barbican_secret_store.log
   if [ $(openstack secret show $href_value | grep $singned_cert_key) != ' ' ]
   then
     echo "Barbican Secret Key added Successfully"
@@ -203,20 +206,20 @@ creating_signed_image()
   verify_addition_of_key_to_barbican_secret_store
   ##Use private_key.pem to sign the image and generate the .signature file
   output=$(openssl dgst -sha256 -sign /home/osp_admin/barbican_keys/$private_key -sigopt rsa_padding_mode:pss -out /home/osp_admin/barbican_keys/$signing_image /home/osp_admin/$cloud_file)
-  echo $output
-  echo $output > $logs_directory/creating_signed_image.log
+  echo "$output"
+  echo "$output" > $logs_directory/creating_signed_image.log
   ##Convert the resulting .signature file into base64 format
   output=$(base64 -w 0 /home/osp_admin/barbican_keys/$signing_image > /home/osp_admin/barbican_keys/$signing_image_b64)
-  echo $output
-  echo $output >> $logs_directory/creating_signed_image.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_signed_image.log
   ###Load the base64 value into a variable to use it in the subsequent command
   output=$(image_signature_b64=$(cat /home/osp_admin/barbican_keys/$signing_image_b64))
-  echo $output
-  echo $output >> $logs_directory/creating_signed_image.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_signed_image.log
   ##### Upload the signed image to glance. For img_signature_certificate_uuid, you must specify the UUID of the signing key you previously uploaded to barbican
   output=$(openstack image create --container-format bare --disk-format qcow2 --property img_signature='$image_signature_b64' --property img_signature_certificate_uuid=$href_id --property img_signature_hash_method='SHA-256' --property img_signature_key_type='RSA-PSS' $image < $cloud_file)
-  echo $output
-  echo $output >> $logs_directory/creating_signed_image.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_signed_image.log
   
   if [ $(openstack image show $image | awk '/status/ {print $4}') = 'active' ]
   then
@@ -234,33 +237,33 @@ creating_signed_image()
 creating_network_and_server()
 {
   output=$(openstack network create $network)
-  echo $output
-  echo $output > $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" > $logs_directory/creating_network_and_server.log
   
   output=$(openstack subnet create $subnet --network $network --subnet-range 192.168.50.0/24)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   
   output=$(openstack router create $router)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   
   output=$(openstack router set $router --external-gateway $public_network)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   ###Adding Private Subnet to Router
   output=$(openstack router add subnet $router $subnet)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   ### creating keypair
   output=$(openstack keypair create ssh-key >> /home/osp_admin/ssh-key.pem)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   chmod 400 /home/osp_admin/ssh-key.pem
   ### creating server
   output=$(openstack server create --flavor $flavor --image $image --key-name ssh-key --security-group $security_group --network $network $instance)
-  echo $output
-  echo $output >> $logs_directory/creating_network_and_server.log
+  echo "$output"
+  echo "$output" >> $logs_directory/creating_network_and_server.log
   sleep 1m
   output=$(openstack server show $instance | grep status )
   status=$(awk '{ if($4 == "active") print $4;}' awk.txt)
@@ -303,12 +306,12 @@ attach_encrypted_volume_to_existing_instance()
 {
   #openstack server add volume $instance $encrypted_volume
   output=$(openstack volume create --size 5 --bootable $unencrypted_volume)
-  echo $output
-  echo $output >> $logs_directory/attach_encrypted_volume_to_existing_instance.log
+  echo "$output"
+  echo "$output" >> $logs_directory/attach_encrypted_volume_to_existing_instance.log
   
   output=$(openstack server add volume $instance $unencrypted_volume)
-  echo $output
-  echo $output >> $logs_directory/attach_encrypted_volume_to_existing_instance.log
+  echo "$output"
+  echo "$output" >> $logs_directory/attach_encrypted_volume_to_existing_instance.log
   if [ $(openstack server show $instance | awk '/volumes_attached/ {print $4}') = '|' ]
   then
     echo "volume Attaced failed / No volume Attached"
