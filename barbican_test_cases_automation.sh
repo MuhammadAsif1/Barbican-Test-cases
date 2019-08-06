@@ -2,13 +2,13 @@
 
 ################## ------- Varibales ----------###################
 ###-- 3 compute nodes ---##
-compute_node1_ip='192.168.12.140'
-compute_node2_ip='192.168.12.141'
-compute_node3_ip='192.168.12.142'
+compute_node1_ip='192.168.120.30'
+compute_node2_ip='192.168.120.27'
+compute_node3_ip='192.168.120.22'
 ###-- 3 controller nodes ---##
-controller_node1_ip='192.168.12.143'
-controller_node2_ip='192.168.12.144'
-controller_node3_ip='192.168.12.145'
+controller_node1_ip='192.168.120.28'
+controller_node2_ip='192.168.120.26'
+controller_node3_ip='192.168.120.35'
 barbican_parameter='castellan.key_manager.barbican_key_manager.BarbicanKeyManager' # value of this parameter ----> castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #verify glance is configured to use barbican
 glance_parameter='True'
@@ -264,10 +264,10 @@ creating_network_and_server()
   output=$(openstack server create --flavor $flavor --image $image --key-name ssh-key --security-group $security_group --network $network $instance)
   echo "$output"
   echo "$output" >> $logs_directory/creating_network_and_server.log
-  sleep 1m
-  output=$(openstack server show $instance | grep status )
-  status=$(awk '{ if($4 == "active") print $4;}' awk.txt)
-  if [ $status = 'active']
+  sleep 2m
+  output=$(openstack server show $instance | awk '/status/ {print $4}')
+  ##status=$(awk '{ if($4 == "active") print $4;}' awk.txt)
+  if [ $output = 'ACTIVE']
   then
     echo '========================================================================================='
     echo '===================== Instance created  Created successfully ============================'
@@ -282,15 +282,18 @@ creating_network_and_server()
 #    read Floating_IP
 #    openstack server add floating ip $instance $Floating_IP
 #    output=$(ping -c 1 $Floating_IP &> /dev/null && echo success || echo fail)
-    Floating_IP=$(openstack server list | awk '{ if($4 == "$instance") print $10}')
+    Floating_IP=$(openstack server list | awk "/$instance/"'{print $9}')
+    echo "Floating_IP"
+    echo "$Floating_IP"
+    echo "$Floating_IP" >> $logs_directory/creating_network_and_server.log
     output=$(ping -c 1 $Floating_IP &> /dev/null && echo success || echo fail)
     if [ $output = 'success']
     then
-      ping $Floating_IP
+      ping -w $Floating_IP
       echo '=========================== instance is reachable from external network ==========='
       echo '=========================== instance is reachable from external network ===========' >> $logs_directory/creating_network_and_server.log
     else 
-      ping $Floating_IP
+      ping -w $Floating_IP
       echo '=========================== ping unsuccessfull, test case failde ==========='
       echo '=========================== ping unsuccessfull, test case failde ===========' >> $logs_directory/creating_network_and_server.log
     fi
